@@ -79,52 +79,58 @@ export default function BlogsOne() {
             </Link>
           </div>
         </div>
-        <SlideshowLightbox className="grid gap-4 gap-y-8 py-6 md:grid-cols-2 lg:grid-cols-3" lightboxIdentifier="lightbox1" framework="next" images={posts} theme="lightbox">
+        {
+          posts.length ?
 
-          {
-            search.length ?
-              <>
-                {posts?.map((post, index) => {
-                  let s = search.toLocaleLowerCase();
-                  if (post.desc.includes(s)) {
-                    return <div key={index} className="flex flex-col justify-between space-y-2">
-                      <div className="space-y-2">
-                        <Image loader={() => post.src} width={500} height={500} src={post.src} data-lightboxjs="lightbox1" className="aspect-video w-full rounded-md" alt={post.desc} />
-                        {/* <Image alt="" loader={() => post.poster} src={post.poster} className="aspect-video w-full rounded-md" data-lightboxjs="lightbox1" width={500} height={500} /> */}
-                        <p className="w-full text-sm font-semibold leading-tight text-purple-700">
-                          {post.url}
-                        </p>
-                        <p className="w-full text-base leading-normal text-gray-100">{post.url}</p>
-                        <div className="h-10"></div>
-                      </div>
-                    </div>
-                  }
-                }
-                )}
-              </>
-              :
-              <>
-                {posts?.map((post, index) => {
-                  if (index >= indexOfFirst && index < indexOfLast) {
-                    return <div key={index} className="flex flex-col justify-between space-y-2">
-                      <div className="space-y-2">
-                        <Image loader={() => post.src} width={500} height={500} src={post.src} data-lightboxjs="lightbox1" className="aspect-video w-full rounded-md" alt={post.desc} />
-                        {/* <Image alt="" loader={() => post.poster} src={post.poster} className="aspect-video w-full rounded-md" data-lightboxjs="lightbox1" width={500} height={500} /> */}
-                        <p className="w-full text-sm font-semibold leading-tight text-purple-700">
-                          {post.url}
-                        </p>
-                        <p className="w-full text-base leading-normal text-gray-100">{post.url}</p>
-                        <div className="h-10"></div>
-                      </div>
-                    </div>
-                  }
-                }
+            <SlideshowLightbox className="grid gap-4 gap-y-8 py-6 md:grid-cols-2 lg:grid-cols-3" lightboxIdentifier="lightbox1" framework="next" images={posts} theme="lightbox">
+              {
+                search.length ?
+                  <>
+                    {posts?.map((post, index) => {
+                      let s = search.toLocaleLowerCase();
+                      if (post.desc.includes(s)) {
+                        return <div key={index} className="flex flex-col justify-between space-y-2">
+                          <div className="space-y-2">
+                            <Image loader={() => post.src} width={500} height={500} src={post.src} data-lightboxjs="lightbox1" className="aspect-video w-full rounded-md" alt={post.desc} />
+                            {/* <Image alt="" loader={() => post.poster} src={post.poster} className="aspect-video w-full rounded-md" data-lightboxjs="lightbox1" width={500} height={500} /> */}
+                            <p className="w-full text-sm font-semibold leading-tight text-purple-700">
+                              {post.url}
+                            </p>
+                            <p className="w-full text-base leading-normal text-gray-100">{post.url}</p>
+                            <div className="h-10"></div>
+                          </div>
+                        </div>
+                      }
+                    }
+                    )}
+                  </>
+                  :
+                  <>
+                    {posts?.map((post, index) => {
+                      if (index >= indexOfFirst && index < indexOfLast) {
+                        return <div key={index} className="flex flex-col justify-between space-y-2">
+                          <div className="space-y-2">
+                            <Image loader={() => post.src} width={500} height={500} src={post.src} data-lightboxjs="lightbox1" className="aspect-video w-full rounded-md" alt={post.desc} />
+                            {/* <Image alt="" loader={() => post.poster} src={post.poster} className="aspect-video w-full rounded-md" data-lightboxjs="lightbox1" width={500} height={500} /> */}
+                            <p className="w-full text-sm font-semibold leading-tight text-purple-700">
+                              {post.url}
+                            </p>
+                            <p className="w-full text-base leading-normal text-gray-100">{post.url}</p>
+                            <div className="h-10"></div>
+                          </div>
+                        </div>
+                      }
+                    }
 
-                )}
-              </>
-          }
+                    )}
 
-        </SlideshowLightbox>
+                  </>
+              }
+
+            </SlideshowLightbox>
+            : <></>
+        }
+
         <hr className="my-6" />
         {/* pagination */}
         <Pagination posts={posts} perPage={perPage} indexOfFirst={indexOfFirst} indexOfLast={indexOfLast} currentpage={currentpage} setcurrentpage={setcurrentpage} />
