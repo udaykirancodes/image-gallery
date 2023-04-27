@@ -21,6 +21,8 @@ import Link from 'next/link'
 
 export default function BlogsOne() {
 
+  // GET IMAGES
+
   useEffect(() => { document.title = 'Image Gallery 🔥' }, []);
   return (
 
