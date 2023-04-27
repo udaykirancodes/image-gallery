@@ -24,7 +24,7 @@ const handler = nc({
     onError: (err, req, res, next) => {
         console.error(err.stack);
         console.error(err);
-        res.status(500).end("Something broke!");
+        res.status(500).json(err);
     },
     onNoMatch: (req, res) => {
         res.status(404).end("Page is not found");
