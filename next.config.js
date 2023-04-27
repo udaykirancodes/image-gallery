@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    mongodburl: "mongodb://localhost:27017/imageupload?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false ",
+    mongodburl: "mongodb+srv://udaykirancodes:udaykirancodes@cluster0.ip9n0c4.mongodb.net/nexttask?retryWrites=true&w=majority",
   }
 }
 

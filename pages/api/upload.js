@@ -13,7 +13,7 @@ export const config = {
 // MULTER Requirements
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './public/')
+        cb(null, './public')
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + uniqid() + path.extname(file.originalname))
@@ -33,11 +33,13 @@ const handler = nc({
     res.send('Upload GET')
 }).post(upload.array('images', 50), async (req, res) => {
     try {
+        let descarr = JSON.parse(req.body.desc);
         if (req.files && req.files.length) {
+            let ind = 0;
             for await (let file of req.files) {
                 let saved = new ImageModel({
-                    url: req.files[0].path,
-                    desc: req.files[0].path || ''
+                    src: file.filename,
+                    desc: descarr[ind++] || ''
                 })
                 await saved.save();
             }

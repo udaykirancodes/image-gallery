@@ -3,8 +3,10 @@ import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
+import { useRouter } from 'next/router'
 export default function Uploader() {
     const [files, setFiles] = useState([]);
+    const router = useRouter()
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/*': []
@@ -25,29 +27,27 @@ export default function Uploader() {
         let newFiles = files.filter((file, ind) => ind !== index)
         setFiles(newFiles);
     };
-
-    // newly added code
-    const [characters, updateCharacters] = useState([]);
-
-    function handleOnDragEnd(result) {
-        if (!result.destination) return;
-
-        const items = Array.from(files);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
-
-        setFiles(items) // update files
-    }
-
     const uploadImages = async () => {
+        console.log('Uploadig Started');
         try {
             if (!files.length) return;
             const formdata = new FormData();
-            formdata.append('image', files[0])
-            let { data } = await axios.post('/api/upload', formdata);
+            let arr = [];
+            for (let i = 0; i < files.length; i++) {
+                files[i].desc = files[i].desc || 'image'
+                formdata.append('images', files[i])
+                arr.push(files[i].desc);
+            }
+            formdata.append('desc', JSON.stringify(arr));
+            let { data } = await axios.post('/api/upload', formdata, { validateStatus: false });
+            console.log('req end : ' + data)
+            if (data.success) {
+                router.push('/')
+            }
         } catch (error) {
-
+            console.log(error);
         }
+        console.log('Done')
     }
 
     return (
@@ -82,6 +82,7 @@ export default function Uploader() {
                                     <input
                                         className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
                                         type="text"
+                                        onChange={(e) => { file.desc = e.target.value }}
                                         placeholder="add description for this picture" />
                                     <div className="h-10"></div>
                                 </div>
@@ -92,7 +93,8 @@ export default function Uploader() {
             </div>
             <div className="w-full mb-20 flex justify-center items-center px-20">
                 <button
-                    className="w-80 flex justify-center items-center mx-auto inline-flex items-center rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white hover:bg-indigo-500">
+                    onClick={uploadImages}
+                    className="w-80 flex justify-center mx-auto items-center rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white hover:bg-indigo-500">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
