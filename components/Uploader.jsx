@@ -22,6 +22,7 @@ export default function Uploader() {
         return () => files.forEach(file => URL.revokeObjectURL(file.preview));
     }, []);
 
+
     const removeImageFromFiles = (index) => {
         console.log(files[index]);
         let newFiles = files.filter((file, ind) => ind !== index)
@@ -38,8 +39,9 @@ export default function Uploader() {
                 formdata.append('images', files[i])
                 arr.push(files[i].desc);
             }
+
             formdata.append('desc', JSON.stringify(arr));
-            let { data } = await axios.post('/api/upload', formdata, { validateStatus: false });
+            let { data } = await axios.post('/api/upload', formdata, { validateStatus: false, headers: { 'content-type': 'multipart/form-data' } });
             console.log('req end : ' + data)
             if (data.success) {
                 router.push('/')
